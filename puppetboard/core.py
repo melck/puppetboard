@@ -89,8 +89,6 @@ def environments() -> dict:
             envs_to_return.append(first_env)
 
     if len(envs_to_return) > 0:
-        # separator
-        # TODO: replace it with a https://semantic-ui.com/modules/dropdown.html#divider
         envs_to_return.append(DIVIDER)
 
     for env in envs_from_db:
