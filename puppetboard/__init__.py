@@ -1,3 +1,5 @@
 #
 # Puppetboard
 #
+
+DIVIDER = '--------------------'

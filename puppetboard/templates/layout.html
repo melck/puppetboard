@@ -21,7 +21,7 @@
       <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
       <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css' />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-se/1.11.3/dataTables.semanticui.min.css" integrity="sha512-UPcDeMbrdWHvKrA6SZjHSeWRV6UPH4NbIyUFDGowqNZgr8TlKaEOt6IS+/0h6TY4UXr0HNXeTY373XV2Kpp64g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.22/c3.min.css" integrity="sha512-i6an+SVy8Q0HXieEwQFTzbnrE3xgfVly99YatczufZCQB0RI6wD+wb5fX3k3Co2KshtsMra/5OTdjCbpdJb/VQ==" crossorigin="anonymous" />
     {% endif %}
     <link href="{{ url_for('static', filename='css/puppetboard.css') }}" rel="stylesheet" />
@@ -50,7 +50,7 @@
       <script src="{{url_for('static', filename='js/d3.min.js')}}"></script>
       <script src="{{url_for('static', filename='js/c3.min.js')}}"></script>
     {% else %}
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.9/d3.min.js" integrity="sha512-RPIlDnLubawr6Fz9XbviqhMcj28VVf2daawCv6ZU26Ik6tp9mrBgdQHbmSYJLjpppXJtjBBsp0TUJZJmReUmYw==" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.22/c3.min.js" integrity="sha512-y+qMlwO+SzpIAf1t754evnKZKBr+VVaTi0vFE29jaXAEuE37ez2McMianiaenQSPaubhzxVu6cWIl5KNlbGzPA==" crossorigin="anonymous"></script>
     {% endif %}
@@ -79,7 +79,7 @@
   </head>
 
   <body>
-    <div class="ui darkblue doubling stackable inverted large menu">
+    <div class="ui darkblue inverted large menu">
       <div class="title item">
         Puppetboard
       </div>
@@ -88,10 +88,14 @@
         href="{{ url_for(endpoint, env=current_env) }}">{{ caption }}</a>
       {%- endfor %}
       <div class="right menu">
-        <select class="ui item search dropdown icon select-environment">
+        <select class="ui item search very long dropdown icon select-environment">
           <option value=" {{url_for_field('env', '*')}}"{% if '*' == current_env %} selected{% endif %}>All Environments</option>
-          {%- for env in envs %}
+          {%- for env in envs.envs %}
+          {%- if env == envs.divider %}
+          <option disabled>{{env}}</option>
+          {%- else %}
           <option value="{{url_for_field('env', env)}}"{% if env == current_env %} selected{% endif %}>{{env}}</option>
+          {%- endif %}
           {%- endfor %}
         </select>
         <div class="item"><a href="https://github.com/voxpupuli/puppetboard" target="_blank">{{ version() }}</a></div>

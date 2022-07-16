@@ -8,6 +8,7 @@ from pypuppetdb import connect
 from puppetboard.utils import (get_or_abort, jsonprint,
                                url_for_field, url_static_offline, quote_columns_data)
 from puppetboard.version import __version__ as own_version
+from puppetboard import DIVIDER
 
 REPORTS_COLUMNS = [
     {'attr': 'end', 'filter': 'end_time',
@@ -74,15 +75,30 @@ def get_puppetdb():
     return PUPPETDB
 
 
-def environments():
+def environments() -> dict:
+    envs_to_return = []
+
     puppetdb = get_puppetdb()
-    envs = get_or_abort(puppetdb.environments)
-    x = []
+    envs_from_db = [env['name'] for env in get_or_abort(puppetdb.environments)]
+    first_envs = get_app().config.get('FIRST_ENVS')
 
-    for env in envs:
-        x.append(env['name'])
+    # in the returned list the envs that are in the FIRST_ENVS should be returned first
+    # and in the same order as in FIRST_ENVS
+    for first_env in first_envs:
+        if first_env in envs_from_db:
+            envs_to_return.append(first_env)
 
-    return x
+    if len(envs_to_return) > 0:
+        # separator
+        # TODO: replace it with a https://semantic-ui.com/modules/dropdown.html#divider
+        envs_to_return.append(DIVIDER)
+
+    for env in envs_from_db:
+        # don't list the envs that are in the FIRST_ENVS twice
+        if env not in first_envs:
+            envs_to_return.append(env)
+
+    return { 'envs': envs_to_return, 'divider': DIVIDER }
 
 
 # as documented in

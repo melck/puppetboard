@@ -10,6 +10,8 @@ from packaging.version import parse
 from pypuppetdb.errors import EmptyResponseError
 from requests.exceptions import ConnectionError, HTTPError
 
+from puppetboard import DIVIDER
+
 log = logging.getLogger(__name__)
 
 
@@ -151,6 +153,6 @@ def quote_columns_data(data: str) -> str:
     return data.replace('.', '\\.')
 
 
-def check_env(env, envs):
-    if env != '*' and env not in envs:
+def check_env(env: str, envs: dict):
+    if env != '*' and env != DIVIDER and env not in envs['envs']:
         abort(404)

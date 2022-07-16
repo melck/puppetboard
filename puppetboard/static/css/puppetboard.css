@@ -255,3 +255,8 @@ td.code {
 #friendly_div {
   margin-bottom: 1em;
 }
+
+.ui.inverted.menu .active.item {
+  background:rgba(255,255,255,.15);
+  color:#fff!important
+}
